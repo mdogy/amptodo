@@ -4,48 +4,72 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ListTodos from './ListTodos/ListTodos.js';
-import {generate} from 'randomstring';
+import Amplify from 'aws-amplify';
+import awsmobile from './aws-exports';
+import { withAuthenticator } from 'aws-amplify-react';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listTodoItems } from './graphql/queries';
+import { createTodoItem, deleteTodoItem} from './graphql/mutations';
+// Imports above this line
 
+Amplify.configure(awsmobile);
 
 class App extends Component {
-  state = {
-    "todos": [
-      { "key": generate(10),
-        "title": 'Walk the cat',
-        "description": 'She is going crazy'},
-      { "key": generate(10),
-        "title": 'Pacify Aliens',
-        "description": 'They don\'t want to hear Halloween jokes anymore'}
-    ],
-    "collapse": false,
-    "formTitle": '',
-    "formDescription": ''
+  constructor (props){
+    super(props);
+    this.state ={
+      todoItems: [],
+      "formTitle": '',
+      "formDescription": ''
+    }
   }
 
-  addTodoHandler = (event) => {
+  componentDidMount(){
+    this.componentDidUpdate();
+  }
+
+  async componentDidUpdate(){
+    try {
+      const apiData = await API.graphql(graphqlOperation(listTodoItems))
+      const todoItems = apiData.data.listTodoItems.items
+      this.setState({ todoItems })
+    } catch (err) {
+      console.log('error: ', err)
+    }    
+  }
+
+  addTodoHandler = async (event) => {
     event.preventDefault();
-    let newTodo = {
-      key: generate(10),
-      title: this.state.formTitle,
-      description: this.state.formDescription
+    let todoItem = { 
+        input: {
+        title: this.state.formTitle,
+        description: this.state.formDescription
+        }
     };
-    this.setState({todos:[...this.state.todos,newTodo]});
-    this.setState({formTitle:''});
-    this.setState({formDescription:''})
+    try {
+      await API.graphql(graphqlOperation(createTodoItem, todoItem));
+      this.setState({formTitle:''});
+      this.setState({formDescription:''})
+    } catch (err) {
+      console.log('error: ', err)
+    }
   }
 
-  closeTodoHandler = (key) => {
-    let todos = [...this.state.todos];
-    let deleteIndex = todos.findIndex((item)=>item.key===key);
-    todos.splice(deleteIndex, 1);
-    this.setState({"todos":todos});
+  closeTodoHandler = async (key) => {
+    let todoItem = { input: {'id': key} };
+    try {
+      await API.graphql(graphqlOperation(deleteTodoItem, todoItem));
+      this.setState();
+
+    } catch (err) {
+      console.log('error: ', err)
+    }
   }
 
   updateDescriptionField = (event) => {
     event.preventDefault();
     this.setState({ formDescription: event.target.value });
   }
-
 
   render = () => {
     return (
@@ -55,7 +79,7 @@ class App extends Component {
             <h1>React Based ToDo List</h1>
           </header>
           <ListTodos 
-            todos={this.state.todos}
+            todos={this.state.todoItems}
             closer={this.closeTodoHandler}>
           </ListTodos>
           <h2 className='text-left'>Add A ToDo</h2>
@@ -84,5 +108,4 @@ class App extends Component {
   }
 }
 
-export default App;
-
+export default withAuthenticator(App, true);

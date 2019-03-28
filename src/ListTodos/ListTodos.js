@@ -7,11 +7,11 @@ function ListTodos (props) {
 
   let todos = [...props.todos];
   let listItems = todos.map((item)=>
-    <ListGroup.Item key={item.key}>
+    <ListGroup.Item key={item.id}>
       <Card className="bg-light border rounded">
-        <span key={item.key}
+        <span key={item.id}
           className="text-right"
-          onClick={props.closer.bind(null,item.key)}>{'\u274e'}</span>
+          onClick={props.closer.bind(null,item.id)}>{'\u274e'}</span>
           <Card.Body className="text-left">
             <h5 >{item.title}</h5>
             <p>{item.description}</p>
