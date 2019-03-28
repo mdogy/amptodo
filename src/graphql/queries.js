@@ -24,24 +24,3 @@ export const listTodoItems = `query ListTodoItems(
   }
 }
 `;
-export const getRadoobj = `query GetRadoobj($id: ID!) {
-  getRadoobj(id: $id) {
-    id
-    name
-  }
-}
-`;
-export const listRadoobjs = `query ListRadoobjs(
-  $filter: ModelradoobjFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listRadoobjs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      name
-    }
-    nextToken
-  }
-}
-`;

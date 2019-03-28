@@ -25,24 +25,3 @@ export const onDeleteTodoItem = `subscription OnDeleteTodoItem {
   }
 }
 `;
-export const onCreateRadoobj = `subscription OnCreateRadoobj {
-  onCreateRadoobj {
-    id
-    name
-  }
-}
-`;
-export const onUpdateRadoobj = `subscription OnUpdateRadoobj {
-  onUpdateRadoobj {
-    id
-    name
-  }
-}
-`;
-export const onDeleteRadoobj = `subscription OnDeleteRadoobj {
-  onDeleteRadoobj {
-    id
-    name
-  }
-}
-`;
