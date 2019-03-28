@@ -1,0 +1,10 @@
+type TodoItem @model {
+  id: ID!
+  title: String!
+  description: String
+}
+
+type radoobj @model {
+  id: ID!
+  name: String!
+}

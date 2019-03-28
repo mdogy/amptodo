@@ -1,0 +1,19 @@
+{
+    "local": {
+        "awscloudformation": {
+            "AuthRoleName": "amptodo-20190327191556-authRole",
+            "UnauthRoleArn": "arn:aws:iam::499528825524:role/amptodo-20190327191556-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::499528825524:role/amptodo-20190327191556-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amptodo-20190327191556-deployment",
+            "UnauthRoleName": "amptodo-20190327191556-unauthRole",
+            "StackName": "amptodo-20190327191556",
+            "StackId": "arn:aws:cloudformation:us-east-1:499528825524:stack/amptodo-20190327191556/472618d0-50e6-11e9-a2cc-0e86e2a0c174"
+        },
+        "categories": {
+            "auth": {
+                "cognitod863c396": {}
+            }
+        }
+    }
+}
